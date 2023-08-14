@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import Code from "./components/Code";
 
 function App() {
   // 入力される状態管理
@@ -13,7 +12,7 @@ function App() {
   const [response, setResponse] = useState('');
 
   // キーの入力に対してダイアトニックコードのリスト管理
-  const [keyList, setKeyList] = useState([]);
+  const [keyList, setKeyList] = useState(["C", "Dm", "Em", "F", "G", "Am", "Bm"]);
 
   // それぞれ入力された時の関数
   const onChangeTitle = (e) => setTitle(e.target.value);
@@ -26,11 +25,6 @@ function App() {
   }
   const onChangeLiric = (e) => setLiric(e.target.value);
 
-  // const crateKeyList = (key) => {
-      // if (key == "C" ||  key == "Am") {
-          // setKeyList(["C", "Dm", "Em", "F", "G", "Am", "Bm"])
-      // }
-  // }
   
   // 入力に応じた返答を生成するロジック
   const generateResponse = (input) => {
@@ -82,7 +76,38 @@ function App() {
             <input type="text" placeholder="カポ" onChange={onChangeKapo} />
           </li>
           <li>
-            <input type="text" value={key} placeholder="キー" onChange={onChangeKey} />
+            <select name="key" value={key} onChange={onChangeKey}>
+              <optgroup label="メジャーキー">
+                <option value="C">C</option>
+                <option value="C#">C#</option>
+                <option value="D">D</option>
+                <option value="E♭">E♭</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#</option>
+                <option value="G">G</option>
+                <option value="A♭">A♭</option>
+                <option value="A">A</option>
+                <option value="B♭">B♭</option>
+                <option value="B">B</option>
+              </optgroup>
+              <optgroup label="マイナーキー">
+                <option value="Am">Am</option>
+                <option value="A#m">A#m</option>
+                <option value="Bm">Bm</option>
+                <option value="Cm">Cm</option>
+                <option value="C#m">C#m</option>
+                <option value="Dm">Dm</option>
+                <option value="D#m">D#m</option>
+                <option value="Em">Em</option>
+                <option value="Fm">Fm</option>
+                <option value="F#m">F#m</option>
+                <option value="Gm">Gm</option>
+                <option value="G#m">G#m</option>
+              </optgroup>
+              
+            </select>
+            {/* <input type="text" value={key} placeholder="キー" onChange={onChangeKey} /> */}
           </li>
         </ul>
       </form>
