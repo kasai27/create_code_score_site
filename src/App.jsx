@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { FormGroup } from "react-bootstrap";
 
 function App() {
   // 入力される状態管理
@@ -10,6 +9,9 @@ function App() {
   const [kapo, setKapo] = useState(null);
   const [key, setKey] = useState(null);
   const [liric, setLiric] = useState(null);
+
+  // テキストエリアの状態管理 
+  const inputRef = useRef(null);
 
   // キーの入力に対しての返答の状態管理
   const [response, setResponse] = useState('');
@@ -60,8 +62,23 @@ function App() {
 
   // コードのボタンが押された時のロジック
   const onClickCodeButton = (code) => {
+    // テキストエリアの状態
+    const input = inputRef.current;
+
     code = "[" + code + "]"
-    setLiric((prevContent) => prevContent + code)
+
+    if (input) {
+      // カーソル位置取得
+      const startPos = input.selectionStart;
+      const endPos = input.selectionEnd;
+
+      const newText = liric.substring(0, startPos) + code + liric.substring(endPos);
+
+      setLiric(newText);
+      input.focus();
+      input.selectionStart = startPos;
+      input.selectionEnd = startPos;
+    }
   }
 
   return (
@@ -124,7 +141,7 @@ function App() {
       
       <Form>
         <Form.Group className="mb-3">
-          <Form.Control as="textarea" rows={3} value={liric} onChange={onChangeLiric} placeholder="歌詞，コード" />
+          <Form.Control as="textarea" rows={10} value={liric} ref={inputRef} onChange={onChangeLiric} placeholder="歌詞，コード" />
         </Form.Group>
       </Form>
       
