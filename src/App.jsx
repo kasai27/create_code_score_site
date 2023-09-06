@@ -229,7 +229,7 @@ function App() {
       
       <Button onClick={generatePDF}>作成</Button>
       
-      {pdfUrl && <iframe src={pdfUrl} width="100%" height="500" title="Generated PDF" />}
+      {pdfUrl && <a href={pdfUrl} target="_blank" rel="noopener noreferrer">View PDF</a>}
   
     </div>
   );
