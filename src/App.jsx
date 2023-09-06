@@ -2,15 +2,16 @@ import React, { useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { ButtonGroup } from "react-bootstrap";
+import axios from 'axios';
 
 function App() {
   // 入力される状態管理
   const [title, setTitle] = useState(null);
   const [name, setName] = useState(null);
-  const [originalKey, setOriginalKey] = useState(null);
-  const [kapo, setKapo] = useState(null);
-  const [playKey, setPlayKey] = useState(null);
-  const [liric, setLiric] = useState('');
+  const [originalKey, setOriginalKey] = useState("C");
+  const [capo, setCapo] = useState("Capoなし");
+  const [playKey, setPlayKey] = useState("C");
+  const [lyric, setLyric] = useState('');
 
   // テキストエリアの状態管理 
   const inputRef = useRef(null);
@@ -25,13 +26,13 @@ function App() {
   const onChangeTitle = (e) => setTitle(e.target.value);
   const onChangeName = (e) => setName(e.target.value);
   const onChangeOriginalKey = (e) => setName(e.target.value);
-  const onChangeKapo = (e) => setKapo(e.target.value);
+  const onChangeCapo = (e) => setCapo(e.target.value);
   const onChangeKey = (e) => {
     setPlayKey(e.target.value);
     // ここで入力に応じた返答を設定するロジックを追加
     setResponse(generateResponse(e.target.value));
   }
-  const onChangeLiric = (e) => setLiric(e.target.value);
+  const onChangeLyric = (e) => setLyric(e.target.value);
 
   
   // 入力に応じた返答を生成するロジック
@@ -76,14 +77,41 @@ function App() {
       const startPos = input.selectionStart;
       const endPos = input.selectionEnd;
 
-      const newText = liric.substring(0, startPos) + code + liric.substring(endPos);
+      const newText = lyric.substring(0, startPos) + code + lyric.substring(endPos);
 
-      setLiric(newText);
+      setLyric(newText);
       input.focus();
       input.selectionStart = startPos;
       input.selectionEnd = startPos;
     }
   }
+
+  
+  // PDFfile作成
+  const [pdfUrl, setPdfUrl] = useState('');
+
+  const generate_pdf_url = "http://127.0.0.1:8000/generate_pdf/";
+
+  const generatePDF = async () => {
+    const formData = new FormData();
+    formData.append('title', title)
+    formData.append('name', name)
+    formData.append('originalKey', originalKey)
+    formData.append('capo', capo)
+    formData.append('playKey', playKey)
+    formData.append('lyric', lyric)
+
+    try {
+      const response = await axios.post(generate_pdf_url, formData, { responseType: 'blob' });
+
+      const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      setPdfUrl(pdfUrl);
+    } catch (error) {
+      console.error('Error gnerating PDF:', error);
+    }
+  };
+
 
   return (
     <div className="App">
@@ -96,7 +124,7 @@ function App() {
           <Form.Control type="text" placeholder="アーティスト名" onChange={onChangeName} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>元曲keyを選択</Form.Label>
+          <Form.Label>original_keyを選択</Form.Label>
           <Form.Select value={originalKey} onChange={onChangeOriginalKey}>
             <optgroup label="メジャーキー">
               <option value="C">C</option>
@@ -134,7 +162,7 @@ function App() {
         <Form.Label>演奏する時のkey設定</Form.Label>
         <Form.Group className="mb-3">
           <Form.Label>カポの位置を選択</Form.Label>
-          <Form.Select value={kapo} onChange={onChangeKapo}>
+          <Form.Select value={capo} onChange={onChangeCapo}>
             <option value="0">Capo 0</option>
             <option value="1">Capo 1</option>
             <option value="2">Capo 2</option>
@@ -195,12 +223,14 @@ function App() {
 
       <Form>
         <Form.Group className="mb-3">
-          <Form.Control as="textarea" rows={10} value={liric} ref={inputRef} onChange={onChangeLiric} placeholder="歌詞，コード" />
+          <Form.Control as="textarea" rows={10} value={lyric} ref={inputRef} onChange={onChangeLyric} placeholder="歌詞，コード" />
         </Form.Group>
       </Form>
       
-      <Button type="submit" >作成</Button>
-
+      <Button onClick={generatePDF}>作成</Button>
+      
+      {pdfUrl && <iframe src={pdfUrl} width="100%" height="500" title="Generated PDF" />}
+  
     </div>
   );
 };
