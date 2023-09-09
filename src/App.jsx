@@ -90,7 +90,7 @@ function App() {
   // PDFfile作成
   const [pdfUrl, setPdfUrl] = useState('');
 
-  const generate_pdf_url = "http://127.0.0.1:8000/generate_pdf/";
+  const generate_pdf_url = "https://create-code-score-pdf.onrender.com/generate_pdf/";
 
   const generatePDF = async () => {
     const formData = new FormData();
