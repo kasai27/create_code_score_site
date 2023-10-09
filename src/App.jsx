@@ -211,15 +211,14 @@ function App() {
       
       <label>選択したkeyでよく使用するコード</label>
       <br />
-      <ButtonGroup className="mb-3">
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[0])}}>{keyList[0]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[1])}}>{keyList[1]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[2])}}>{keyList[2]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[3])}}>{keyList[3]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[4])}}>{keyList[4]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[5])}}>{keyList[5]}</Button>
-        <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[6])}}>{keyList[6]}</Button>
-      </ButtonGroup>
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[0])}}>{keyList[0]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[1])}}>{keyList[1]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[2])}}>{keyList[2]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[3])}}>{keyList[3]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[4])}}>{keyList[4]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[5])}}>{keyList[5]}</Button>{' '}
+      <Button onClick={(e) => {e.preventDefault(); onClickCodeButton(keyList[6])}}>{keyList[6]}</Button>{' '}
+      
 
       <Form>
         <Form.Group className="mb-3">
